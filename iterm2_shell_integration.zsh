@@ -2,12 +2,12 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -44,7 +44,7 @@ if [[ -o interactive ]]; then
     iterm2_print_state_data() {
       local _iterm2_hostname="${iterm2_hostname-}"
       if [ -z "${iterm2_hostname:-}" ]; then
-        _iterm2_hostname=$(hostname -f 2>/dev/null)
+        _iterm2_hostname=$HOST
       fi
       printf "\033]1337;RemoteHost=%s@%s\007" "$USER" "${_iterm2_hostname-}"
       printf "\033]1337;CurrentDir=%s\007" "$PWD"
@@ -161,7 +161,7 @@ if [[ -o interactive ]]; then
         iterm2_hostname=`hostname -f 2>/dev/null`
         # Some flavors of BSD (i.e. NetBSD and OpenBSD) don't have the -f option.
         if [ $? -ne 0 ]; then
-          iterm2_hostname=`hostname`
+          iterm2_hostname=$HOST
         fi
       fi
     fi
