@@ -17,7 +17,9 @@ stty_settings=$(command stty -g)
 ################################################################################
 
 cleanup() {
+  log cleanup "$stty_settings"
   command stty "$stty_settings"
+  command stty echo
 }
 
 die() {
@@ -185,6 +187,7 @@ exec_login_shell() {
 
     log exec_login_shell "$login_shell" with name "$shell_name"
 
+    cleanup
     # We need to pass the first argument to the executed program with a leading -
     # to make sure the shell executes as a login shell. Note that not all shells
     # support exec -a so we use the below to try to detect such shells
@@ -319,7 +322,7 @@ conductor_cmd_write() {
     # suppress STDERR for tar as tar prints various warnings if for instance, timestamps are in the future
     old_umask=$(umask)
     umask 000
-    printf "%s" ${b64data} | base64_decode | command tar "xpzf" "-" "-C" "$destination"
+    printf "%s" ${b64data} | base64_decode | command tar "xpzf" "-" "-C" "$destination" > /dev/null 2>&1
     local rc=$?
     umask "$old_umask"
     (exit $rc)
